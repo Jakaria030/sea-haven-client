@@ -10,12 +10,12 @@ export default {
         lora: ['Lora', 'serif']
       },
       colors: {
-        coral: '#E63946', 
-        offwhite: '#F1FAEE', 
-        aqua: '#A8DADC', 
-        teal: '#457B9D', 
-        navy: '#1D3557', 
-      }
+        primary: '#4EC5C1',
+        secondary: '#1A1A1A',
+      },
+      maxWidth: {
+        '8xl': '90rem',
+      },
     },
   },
   plugins: [require('daisyui'),],
