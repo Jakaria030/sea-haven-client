@@ -11,7 +11,8 @@ export default {
       },
       colors: {
         primary: '#4EC5C1',
-        secondary: '#1A1A1A',
+        secondary: '#2B3440',
+        light: '#D7DDE4',
       },
       maxWidth: {
         '8xl': '90rem',
