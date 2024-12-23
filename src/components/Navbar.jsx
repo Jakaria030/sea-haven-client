@@ -2,8 +2,12 @@ import { FaUserCircle } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import { useContext } from 'react';
+import { AuthContext } from '../provider/AuthProvider';
 
 const Navbar = () => {
+    const {user} = useContext(AuthContext);
+
 
     const links = <>
         <NavLink to='/' className='hover:text-primary transition-colors duration-100'>Home</NavLink>
@@ -48,7 +52,7 @@ const Navbar = () => {
                     {/* right content */}
                     <div className='navbar-end text-secondary'>
                         <div className='sm:flex items-center justify-end gap-3 cursor-pointer'>
-                            <NavLink to='/login-page'><button className='px-4 py-1 sm:py-2 rounded-sm bg-primary font-semibold'>Login</button></NavLink>
+                            <NavLink to='/login-page'><button className='px-4 py-1 sm:py-2 rounded-sm bg-primary font-semibold text-secondary'>Login</button></NavLink>
                         </div>
                     </div>
                     

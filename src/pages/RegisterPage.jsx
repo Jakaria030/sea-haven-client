@@ -1,15 +1,73 @@
 import Lottie from 'lottie-react';
 import loginRegisterLottie from '../assets/animations/login-register-lottie.json';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaFacebook, FaGithub, FaGoogle, FaImage, FaKey, FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import { useContext } from 'react';
+import { AuthContext } from '../provider/AuthProvider';
+import { errorAlert, successAlert, warningAlert } from '../toastify/toastify';
+import { ToastContainer } from 'react-toastify';
 
 
 const RegisterPage = () => {
+
+    const {createUser, setUser, updateUserProfile} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleRegisterForm = (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const name = form.name.value;
+        const photoURL = form.photoURL.value;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        // valid password check
+        if(password.length < 6){
+            warningAlert("Password must be at least 6 characters long.");
+            return;
+        }
+
+        // uppercase letter check
+        const uppercaseRegex = /[A-Z]/;
+        if(!uppercaseRegex.test(password)){
+            warningAlert("Password must contain at least one uppercase letter.");
+            return;
+        }
+
+        // lowercase letter check
+        const lowercaseRegex = /[a-z]/;
+        if(!lowercaseRegex.test(password)){
+            warningAlert("Password must contain at least one lowercase letter");
+            return;
+        }
+
+        // create user
+        createUser(email, password)
+        .then(res => {
+            setUser(res.user);
+            
+            // update user
+            updateUserProfile({displayName: name, photoURL: photoURL})
+            .then(() => {
+                navigate(`/`);
+            })
+            .catch(err => {
+                errorAlert(err.message);
+            })
+        })
+        .catch(err => {
+            errorAlert(err.message);
+        })
+
+    }
+
+
     return (
         <section className='w-full h-screen flex items-center justify-center bg-light'>
             <div className='basis-full sm:basis-10/12 lg:basis-1/2 flex flex-col sm:flex-row items-center justify-center rounded-lg shadow-xl bg-white'>
-
+                <ToastContainer />
                 {/* left content */}
                 <div className='basis-1/3 bg-login-register-bg bg-cover bg-center p-8 sm:p-12 text-center space-y-4 sm:rounded-s-lg'>
                     <Lottie className='size-48 sm:size-60 mx-auto' animationData={loginRegisterLottie}></Lottie>
@@ -18,6 +76,8 @@ const RegisterPage = () => {
                     <Link to='/login-page'>
                         <button className='px-8 py-2 rounded-full border text-lg font-semibold text-white'>Login</button>
                     </Link>
+
+                    <p className='text-white leading-6 underline'><Link to='/'>Go To Home</Link></p>
                 </div>
 
                 {/* right content */}
@@ -43,7 +103,7 @@ const RegisterPage = () => {
 
                     {/* form */}
                     <div className='max-w-5xl '>
-                        <form className='space-y-3'>
+                        <form onSubmit={handleRegisterForm} className='space-y-3'>
                             <label className='input input-bordered flex items-center gap-2'>
                                 <FaUser className='text-xl opacity-70' />
                                 <input type='text' name='name' className='grow' placeholder='Name' required />

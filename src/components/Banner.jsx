@@ -3,7 +3,9 @@ import slide1 from '../assets/carousel/1.png';
 import slide2 from '../assets/carousel/2.png';
 import slide3 from '../assets/carousel/3.jpg';
 import { Link } from 'react-router-dom';
+// Import Swiper styles
 import { Pagination } from 'swiper/modules';
+import 'swiper/css';
 import 'swiper/css/pagination';
 
 
@@ -35,7 +37,7 @@ const Banner = () => {
                             <div className='absolute top-1/2 sm:left-1/2 sm:-translate-x-1/2 -translate-y-1/2 bg-white/50 p-4 rounded-lg space-y-2 text-center'>
                                 <h1 className='text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-secondary'>{slide.title}</h1>
                                 <h3 className='text-secondary font-semibold pb-2'>{slide.subTitle}</h3>
-                                <Link to='/room-page'><button className='bg-primary px-4 py-2 rounded-sm text-lg text-center font-medium'>Book Now</button></Link>
+                                <Link to='/room-page'><button className='bg-primary px-4 py-2 rounded-sm text-lg text-center font-medium text-secondary'>See More</button></Link>
                             </div>
                         </div>
                     </SwiperSlide>)

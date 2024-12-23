@@ -1,6 +1,5 @@
-import Banner from "../components/Banner";
-// Import Swiper styles
-import 'swiper/css';
+import Banner from '../components/Banner';
+
 const HomePage = () => {
     return (
         <div>
