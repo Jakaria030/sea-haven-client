@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import MainLayout from '../MainLayout';
 import HomePage from '../pages/HomePage';
 import ErrorPage from '../pages/ErrorPage';
+import RegisterPage from '../pages/RegisterPage';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
         element: <HomePage></HomePage>,
       },
     ],
+  },
+  {
+    path: 'register-page',
+    element: <RegisterPage></RegisterPage>,
   },
   {
     path: '/*',

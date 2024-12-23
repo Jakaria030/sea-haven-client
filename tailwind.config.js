@@ -17,6 +17,9 @@ export default {
       maxWidth: {
         '8xl': '90rem',
       },
+      backgroundImage: {
+        'login-register-bg': "url('/src/assets/green-bg.jpg')",
+      }
     },
   },
   plugins: [require('daisyui'),],
