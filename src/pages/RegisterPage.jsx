@@ -12,7 +12,7 @@ import Spinner from '../loader/Spinner';
 
 const RegisterPage = () => {
 
-    const {createUser, setUser, updateUserProfile, loading} = useContext(AuthContext);
+    const {createUser, setUser, updateUserProfile, loading, setLoading, signInWithGoogle} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleRegisterForm = (e) => {
@@ -60,13 +60,30 @@ const RegisterPage = () => {
             })
             .catch(err => {
                 errorAlert(err.message);
+                setLoading(false);
             })
         })
         .catch(err => {
             errorAlert(err.message);
+            setLoading(false);
         });
     };
 
+    // continue with google
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+        .then(result => {
+            setUser(result.user);
+            successAlert('You have successfully logged in using Google.');
+            setTimeout(() => {
+                navigate(`/`);
+            }, 3000);
+        })
+        .catch(err => {
+            errorAlert('Login failed!');
+            setLoading(false);
+        });
+    };
 
     return (
         <section className='w-full h-screen flex items-center justify-center bg-light'>
@@ -78,7 +95,7 @@ const RegisterPage = () => {
                     <h2 className='text-2xl md:text-3xl font-bold text-white'>Welcome Back</h2>
                     <p className='text-lg text-white leading-6 pb-5'>To keep connected with us please login with your personal info</p>
                     <Link to='/login-page'>
-                        <button className='px-8 py-2 rounded-full border text-lg font-semibold text-white'>Login</button>
+                        <button className='w-32 h-12 rounded-full border text-lg font-semibold text-white'>Login</button>
                     </Link>
 
                     <p className='text-white leading-6 underline'><Link to='/'>Go To Home</Link></p>
@@ -92,7 +109,7 @@ const RegisterPage = () => {
 
                     {/* social icons */}
                     <div className='flex gap-3 my-3 justify-center'>
-                        <button className='p-2 border rounded-full'>
+                        <button onClick={handleGoogleSignIn} className='p-2 border rounded-full'>
                             <FaGoogle className='text-2xl text-secondary' />
                         </button>
                         <button className='p-2 border rounded-full'>

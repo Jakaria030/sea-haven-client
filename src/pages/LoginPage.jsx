@@ -7,11 +7,12 @@ import { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
 import { errorAlert, successAlert } from '../toastify/toastify';
 import { ToastContainer } from 'react-toastify';
+import Spinner from '../loader/Spinner';
 
 
 const LoginPage = () => {
 
-    const {signInUser, setUser} = useContext(AuthContext);
+    const {signInUser, setUser, loading, setLoading, signInWithGoogle} = useContext(AuthContext);
     const navigate = useNavigate();
 
 
@@ -27,13 +28,30 @@ const LoginPage = () => {
         .then(result => {
             setUser(result.user);
             form.reset();
-            successAlert('Login successful.');
+            successAlert('You have successfully logged in using your email.');
             setTimeout(() => {
                 navigate(`/`);
             }, 3000);
         })
         .catch(err => {
             errorAlert('Please enter valid credentials.');
+            setLoading(false);
+        });
+    };
+
+    // continue with google
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+        .then(result => {
+            setUser(result.user);
+            successAlert('You have successfully logged in using Google.');
+            setTimeout(() => {
+                navigate(`/`);
+            }, 3000);
+        })
+        .catch(err => {
+            errorAlert('Login failed!');
+            setLoading(false);
         });
     };
 
@@ -48,7 +66,7 @@ const LoginPage = () => {
 
                     {/* social icons */}
                     <div className='flex gap-3 my-3 justify-center'>
-                        <button className='p-2 border rounded-full'>
+                        <button onClick={handleGoogleSignIn} className='p-2 border rounded-full'>
                             <FaGoogle className='text-2xl text-secondary' />
                         </button>
                         <button className='p-2 border rounded-full'>
@@ -74,7 +92,7 @@ const LoginPage = () => {
                                 <input type='password' name='password' className='grow' placeholder='Password' required />
                             </label>
 
-                            <button className='px-8 py-2 rounded-full border text-lg font-semibold text-white bg-primary'>Login</button>
+                            <button className='w-32 h-12 rounded-full border text-lg font-semibold text-white bg-primary'>{loading ? <Spinner /> : 'Login'}</button>
                         </form>
                     </div>
                 </div>
@@ -85,7 +103,7 @@ const LoginPage = () => {
                     <h2 className='text-2xl md:text-3xl font-bold text-white'>New Here?</h2>
                     <p className='text-lg text-white leading-6 pb-5'>Register now and discover amazing deals for your perfect hotel booking!</p>
                     <Link to='/register-page'>
-                        <button className='px-8 py-2 rounded-full border text-lg font-semibold text-white'>Register</button>
+                        <button className='w-32 h-12 rounded-full border text-lg font-semibold text-white'>Register</button>
                     </Link>
                     <p className='text-white leading-6 underline'><Link to='/'>Go To Home</Link></p>
                 </div>
