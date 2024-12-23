@@ -1,15 +1,46 @@
 import Lottie from 'lottie-react';
 import loginRegisterLottie from '../assets/animations/login-register-lottie.json';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaFacebook, FaGithub, FaGoogle, FaKey } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import { useContext } from 'react';
+import { AuthContext } from '../provider/AuthProvider';
+import { errorAlert, successAlert } from '../toastify/toastify';
+import { ToastContainer } from 'react-toastify';
 
 
 const LoginPage = () => {
+
+    const {signInUser, setUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+
+    const handleLoginForm = (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        // login user
+        signInUser(email, password)
+        .then(result => {
+            setUser(result.user);
+            form.reset();
+            successAlert('Login successful.');
+            setTimeout(() => {
+                navigate(`/`);
+            }, 3000);
+        })
+        .catch(err => {
+            errorAlert('Please enter valid credentials.');
+        });
+    };
+
     return (
         <section className='w-full h-screen flex items-center justify-center bg-light'>
             <div className='basis-full sm:basis-10/12 lg:basis-1/2 flex flex-col sm:flex-row items-center justify-center rounded-lg shadow-xl bg-white mx-5'>
-
+                <ToastContainer />
                 {/* left content */}
                 <div className='basis-2/3 py-5 sm:py-0 px-4 sm:px-12 text-center relative'>
                     {/* heading */}
@@ -32,7 +63,7 @@ const LoginPage = () => {
 
                     {/* form */}
                     <div className='max-w-5xl '>
-                        <form className='space-y-3'>
+                        <form onSubmit={handleLoginForm} className='space-y-3'>
                             <label className='input input-bordered flex items-center gap-2'>
                                 <MdEmail className='text-xl opacity-70' />
                                 <input type='email' name='email' className='grow' placeholder='Email' required />

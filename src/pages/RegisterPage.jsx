@@ -7,11 +7,12 @@ import { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
 import { errorAlert, successAlert, warningAlert } from '../toastify/toastify';
 import { ToastContainer } from 'react-toastify';
+import Spinner from '../loader/Spinner';
 
 
 const RegisterPage = () => {
 
-    const {createUser, setUser, updateUserProfile} = useContext(AuthContext);
+    const {createUser, setUser, updateUserProfile, loading} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleRegisterForm = (e) => {
@@ -25,33 +26,37 @@ const RegisterPage = () => {
 
         // valid password check
         if(password.length < 6){
-            warningAlert("Password must be at least 6 characters long.");
+            warningAlert('Password must be at least 6 characters long.');
             return;
         }
 
         // uppercase letter check
         const uppercaseRegex = /[A-Z]/;
         if(!uppercaseRegex.test(password)){
-            warningAlert("Password must contain at least one uppercase letter.");
+            warningAlert('Password must contain at least one uppercase letter.');
             return;
         }
 
         // lowercase letter check
         const lowercaseRegex = /[a-z]/;
         if(!lowercaseRegex.test(password)){
-            warningAlert("Password must contain at least one lowercase letter");
+            warningAlert('Password must contain at least one lowercase letter');
             return;
         }
 
         // create user
         createUser(email, password)
-        .then(res => {
-            setUser(res.user);
+        .then(result => {
+            setUser(result.user);
             
             // update user
             updateUserProfile({displayName: name, photoURL: photoURL})
             .then(() => {
-                navigate(`/`);
+                form.reset();
+                successAlert('Registration successful.');
+                setTimeout(() => {
+                    navigate(`/`);
+                }, 3000);
             })
             .catch(err => {
                 errorAlert(err.message);
@@ -59,9 +64,8 @@ const RegisterPage = () => {
         })
         .catch(err => {
             errorAlert(err.message);
-        })
-
-    }
+        });
+    };
 
 
     return (
@@ -124,7 +128,7 @@ const RegisterPage = () => {
                                 <input type='password' name='password' className='grow' placeholder='Password' required />
                             </label>
 
-                            <button className='px-8 py-2 rounded-full border text-lg font-semibold text-white bg-primary'>Register</button>
+                            <button className='w-32 h-12 rounded-full border text-lg font-semibold text-white bg-primary'>{loading ? <Spinner /> : 'Register'}</button>
                         </form>
                     </div>
                 </div>

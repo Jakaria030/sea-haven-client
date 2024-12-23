@@ -8,6 +8,7 @@ import { AuthContext } from '../provider/AuthProvider';
 const Navbar = () => {
     const {user} = useContext(AuthContext);
 
+    // console.log(user);
 
     const links = <>
         <NavLink to='/' className='hover:text-primary transition-colors duration-100'>Home</NavLink>
