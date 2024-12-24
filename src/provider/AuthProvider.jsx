@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
     const updateUserProfile = (updateData) => {
         setLoading(true);
         return updateProfile(auth.currentUser, updateData);
-    }
+    };
 
     // sign in user
     const signInUser = (email, password) => {

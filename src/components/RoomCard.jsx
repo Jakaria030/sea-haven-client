@@ -7,7 +7,7 @@ const RoomCard = ({ room }) => {
     return (
         <Link to={`/room-page/${_id}`} className='bg-white rounded-md '>
             <figure className='z-10 overflow-hidden w-full'>
-                <img className='w-full rounded-t-md hover:scale-110 transition-all duration-150 ease-in-out' src={room_image} />
+                <img className='w-full h-full rounded-t-md hover:scale-110 transition-all duration-150 ease-in-out' src={room_image} />
             </figure>
             <div className='p-3 space-y-2'>
                 <div className='w-3/4 mx-auto bg-light shadow-md p-2 -mt-12 z-20 relative rounded-sm text-center'>
