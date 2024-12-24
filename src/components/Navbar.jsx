@@ -9,8 +9,6 @@ import { errorAlert, successAlert } from '../toastify/toastify';
 const Navbar = () => {
     const { user, signOutUser } = useContext(AuthContext);
 
-    console.log(user);
-
     const links = <>
         <NavLink to='/' className='lg:hover:text-primary transition-colors duration-100'>Home</NavLink>
         <NavLink to='/room-page' className='lg:hover:text-primary transition-colors duration-100'>Rooms</NavLink>
