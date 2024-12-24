@@ -6,7 +6,6 @@ import { MdEmail } from 'react-icons/md';
 import { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
 import { errorAlert, successAlert } from '../toastify/toastify';
-import { ToastContainer } from 'react-toastify';
 import Spinner from '../loader/Spinner';
 
 
@@ -29,9 +28,7 @@ const LoginPage = () => {
             setUser(result.user);
             form.reset();
             successAlert('You have successfully logged in using your email.');
-            setTimeout(() => {
                 navigate(`/`);
-            }, 3000);
         })
         .catch(err => {
             errorAlert('Please enter valid credentials.');
@@ -45,9 +42,7 @@ const LoginPage = () => {
         .then(result => {
             setUser(result.user);
             successAlert('You have successfully logged in using Google.');
-            setTimeout(() => {
-                navigate(`/`);
-            }, 3000);
+            navigate(`/`);
         })
         .catch(err => {
             errorAlert('Login failed!');
@@ -58,7 +53,6 @@ const LoginPage = () => {
     return (
         <section className='w-full h-screen flex items-center justify-center bg-light'>
             <div className='basis-full sm:basis-10/12 lg:basis-1/2 flex flex-col sm:flex-row items-center justify-center rounded-lg shadow-xl bg-white mx-5'>
-                <ToastContainer />
                 {/* left content */}
                 <div className='basis-2/3 py-5 sm:py-0 px-4 sm:px-12 text-center relative'>
                     {/* heading */}

@@ -4,19 +4,31 @@ import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
+import { errorAlert, successAlert } from '../toastify/toastify';
 
 const Navbar = () => {
-    const {user} = useContext(AuthContext);
+    const { user, signOutUser } = useContext(AuthContext);
 
-    // console.log(user);
+    console.log(user);
 
     const links = <>
-        <NavLink to='/' className='hover:text-primary transition-colors duration-100'>Home</NavLink>
-        <NavLink to='/room-page' className='hover:text-primary transition-colors duration-100'>Rooms</NavLink>
-        <NavLink to='/my-bookings-page' className='hover:text-primary transition-colors duration-100'>My Bookings</NavLink>
-        <NavLink to='/contact-page' className='hover:text-primary transition-colors duration-100'>Contact</NavLink>
-        <NavLink to='/about-page' className='hover:text-primary transition-colors duration-100'>About</NavLink>
+        <NavLink to='/' className='lg:hover:text-primary transition-colors duration-100'>Home</NavLink>
+        <NavLink to='/room-page' className='lg:hover:text-primary transition-colors duration-100'>Rooms</NavLink>
+        <NavLink to='/my-bookings-page' className='lg:hover:text-primary transition-colors duration-100'>My Bookings</NavLink>
+        <NavLink to='/contact-page' className='lg:hover:text-primary transition-colors duration-100'>Contact</NavLink>
+        <NavLink to='/about-page' className='lg:hover:text-primary transition-colors duration-100'>About</NavLink>
     </>;
+
+    // sing out user
+    const handleSignOutUser = () => {
+        signOutUser()
+        .then(() => {
+            successAlert('You have been logged out successfully.');
+        })
+        .catch(err => {
+            errorAlert(err.message);
+        });
+    };
 
     return (
         <div className='bg-white sticky top-0 z-50 shadow-md'>
@@ -53,10 +65,21 @@ const Navbar = () => {
                     {/* right content */}
                     <div className='navbar-end text-secondary'>
                         <div className='sm:flex items-center justify-end gap-3 cursor-pointer'>
-                            <NavLink to='/login-page'><button className='px-4 py-1 sm:py-2 rounded-sm bg-primary font-semibold text-secondary'>Login</button></NavLink>
+                            {
+                                user ? <div className='dropdown'>
+                                    <div tabIndex={0} role='button' className='size-10 sm:size-12 rounded-full ring-2 ring-primary flex items-center justify-center cursor-pointer'>
+                                        <img className='size-full rounded-full p-1' src={user?.photoURL} alt="User" />
+                                    </div>
+                                    <ul
+                                        tabIndex={0}
+                                        className='menu menu-md dropdown-content rounded-sm z-[1] mt-5 shadow bg-white right-0'>
+                                        <button onClick={handleSignOutUser} className='px-4 py-2 rounded-sm bg-primary font-semibold text-secondary'>Logout</button>
+                                    </ul>
+                                </div> : <NavLink to='/login-page'><button className='px-4 py-2 rounded-sm bg-primary font-semibold text-secondary'>Login</button></NavLink>
+                            }
                         </div>
                     </div>
-                    
+
                 </div>
             </section>
         </div>

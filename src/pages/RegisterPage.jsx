@@ -5,8 +5,7 @@ import { FaFacebook, FaGithub, FaGoogle, FaImage, FaKey, FaUser } from 'react-ic
 import { MdEmail } from 'react-icons/md';
 import { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
-import { errorAlert, successAlert, warningAlert } from '../toastify/toastify';
-import { ToastContainer } from 'react-toastify';
+import { errorAlert, successAlert } from '../toastify/toastify';
 import Spinner from '../loader/Spinner';
 
 
@@ -26,21 +25,21 @@ const RegisterPage = () => {
 
         // valid password check
         if(password.length < 6){
-            warningAlert('Password must be at least 6 characters long.');
+            errorAlert('Password must be at least 6 characters long.');
             return;
         }
 
         // uppercase letter check
         const uppercaseRegex = /[A-Z]/;
         if(!uppercaseRegex.test(password)){
-            warningAlert('Password must contain at least one uppercase letter.');
+            errorAlert('Password must contain at least one uppercase letter.');
             return;
         }
 
         // lowercase letter check
         const lowercaseRegex = /[a-z]/;
         if(!lowercaseRegex.test(password)){
-            warningAlert('Password must contain at least one lowercase letter');
+            errorAlert('Password must contain at least one lowercase letter');
             return;
         }
 
@@ -53,10 +52,9 @@ const RegisterPage = () => {
             updateUserProfile({displayName: name, photoURL: photoURL})
             .then(() => {
                 form.reset();
-                successAlert('Registration successful.');
-                setTimeout(() => {
-                    navigate(`/`);
-                }, 3000);
+                successAlert('Your have successfully completed registration.');
+                navigate(`/`);
+
             })
             .catch(err => {
                 errorAlert(err.message);
@@ -75,9 +73,7 @@ const RegisterPage = () => {
         .then(result => {
             setUser(result.user);
             successAlert('You have successfully logged in using Google.');
-            setTimeout(() => {
-                navigate(`/`);
-            }, 3000);
+            navigate(`/`);
         })
         .catch(err => {
             errorAlert('Login failed!');
@@ -88,7 +84,6 @@ const RegisterPage = () => {
     return (
         <section className='w-full h-screen flex items-center justify-center bg-light'>
             <div className='basis-full sm:basis-10/12 lg:basis-1/2 flex flex-col sm:flex-row items-center justify-center rounded-lg shadow-xl bg-white'>
-                <ToastContainer />
                 {/* left content */}
                 <div className='basis-1/3 bg-login-register-bg bg-cover bg-center p-8 sm:p-12 text-center space-y-4 sm:rounded-s-lg'>
                     <Lottie className='size-48 sm:size-60 mx-auto' animationData={loginRegisterLottie}></Lottie>

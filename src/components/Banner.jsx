@@ -34,7 +34,7 @@ const Banner = () => {
                             <figure>
                                 <img className='h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] w-full object-cover opacity-90' src={slide.image} />
                             </figure>
-                            <div className='absolute top-1/2 sm:left-1/2 sm:-translate-x-1/2 -translate-y-1/2 bg-white/50 p-4 rounded-lg space-y-2 text-center'>
+                            <div className='absolute top-1/2 sm:left-1/2 sm:-translate-x-1/2 -translate-y-1/2 bg-white/50 p-4 rounded-lg space-y-2 text-center mx-5'>
                                 <h1 className='text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-secondary'>{slide.title}</h1>
                                 <h3 className='text-secondary font-semibold pb-2'>{slide.subTitle}</h3>
                                 <Link to='/room-page'><button className='bg-primary px-4 py-2 rounded-sm text-lg text-center font-medium text-secondary'>See More</button></Link>
