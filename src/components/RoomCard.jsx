@@ -5,7 +5,7 @@ const RoomCard = ({ room }) => {
     const {_id, room_name, room_image, room_price, is_booked} = room;
 
     return (
-        <Link to={`/room-page/${_id}`} className='bg-white rounded-md '>
+        <Link to={`/room-details/${_id}`} className='bg-white rounded-md '>
             <figure className='z-10 overflow-hidden w-full'>
                 <img className='w-full h-full rounded-t-md hover:scale-110 transition-all duration-150 ease-in-out' src={room_image} />
             </figure>

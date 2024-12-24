@@ -7,6 +7,9 @@ import LoginPage from '../pages/LoginPage';
 import RoomsPage from '../pages/RoomsPage';
 import RoomDetailsPage from '../pages/RoomDetailsPage';
 import axios from 'axios';
+import MyBookingPage from '../pages/MyBookingPage';
+import ContactPage from '../pages/ContactPage';
+import AboutPage from '../pages/AboutPage';
 
 const baseURL = import.meta.env.VITE_RootURL;
 
@@ -28,7 +31,7 @@ const router = createBrowserRouter([
         element: <RoomsPage></RoomsPage>,
       },
       {
-        path: '/room-page/:id',
+        path: '/room-details/:id',
         element: <RoomDetailsPage></RoomDetailsPage>,
         loader: async({params}) => {
           try{
@@ -38,6 +41,18 @@ const router = createBrowserRouter([
             throw new Response('Failed to load room details.');
           }
         }
+      },
+      {
+        path: '/my-bookings-page',
+        element: <MyBookingPage></MyBookingPage>,
+      },
+      {
+        path: '/contact-page',
+        element: <ContactPage></ContactPage>,
+      },
+      {
+        path: '/about-page',
+        element: <AboutPage></AboutPage>,
       },
     ],
   },

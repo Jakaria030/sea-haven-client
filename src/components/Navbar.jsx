@@ -10,7 +10,7 @@ const Navbar = () => {
     const { user, signOutUser } = useContext(AuthContext);
 
     const links = <>
-        <NavLink to='/' className='lg:hover:text-primary transition-colors duration-100'>Home</NavLink>
+        <NavLink to='/home-page' className='lg:hover:text-primary transition-colors duration-100'>Home</NavLink>
         <NavLink to='/room-page' className='lg:hover:text-primary transition-colors duration-100'>Rooms</NavLink>
         <NavLink to='/my-bookings-page' className='lg:hover:text-primary transition-colors duration-100'>My Bookings</NavLink>
         <NavLink to='/contact-page' className='lg:hover:text-primary transition-colors duration-100'>Contact</NavLink>

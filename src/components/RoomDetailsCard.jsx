@@ -30,7 +30,8 @@ const RoomDetailsCard = ({ roomDetails }) => {
             displayName,
             photoURL,
             email,
-            checkInDate
+            checkInDate,
+            bookingDate: new Date()
         };
 
         const postData = async () => {
