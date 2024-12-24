@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { AuthContext } from "../provider/AuthProvider";
 import axios from "axios";
 import { errorAlert, successAlert } from '../toastify/toastify';
+import { useNavigate } from "react-router-dom";
 
 
 const RoomDetailsCard = ({ roomDetails }) => {
@@ -13,6 +14,7 @@ const RoomDetailsCard = ({ roomDetails }) => {
     const { _id, room_image, room_name, is_booked } = roomDetails;
     const [checkInDate, setCheckInDate] = useState(new Date());
     const { user, loading } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     // loading state
     if (loading) {
@@ -35,9 +37,14 @@ const RoomDetailsCard = ({ roomDetails }) => {
             try{
                 const { data } = await axios.post(`${baseURL}/booked-room`, {newBooking});
                 if(data.acknowledged){
-                    successAlert(`Success! You have booked the '${room_name}'.`)
+                    const res = await axios.patch(`${baseURL}/rooms/${_id}`, {
+                        is_booked: true,
+                    });
+                    
+                    successAlert(`Congrats, You have booked the '${room_name}'.`);
+                    navigate('/room-page');
                 }else{
-                    errorAlert(`Sorry, the room "${room.room_name}" is not booked.`)
+                    errorAlert(`Sorry, the room "${room.room_name}" is not booked.`);
                 }
                 // close modal
                 document.getElementById('close_modal').click();
