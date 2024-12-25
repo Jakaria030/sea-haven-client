@@ -4,11 +4,14 @@ import TopRoomCard from '../components/TopRoomCard';
 import axios from 'axios';
 import HotelMap from '../components/HotelMap';
 import Testimonial from '../components/Testimonial';
+import offerImage from '../assets/offer.png';
+
 
 const HomePage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
     const [rooms, setRooms] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
@@ -25,27 +28,44 @@ const HomePage = () => {
 
     }, []);
 
-    function LocationMarker() {
-        const [position, setPosition] = useState(null)
-        const map = useMapEvents({
-            click() {
-                map.locate()
-            },
-            locationfound(e) {
-                setPosition(e.latlng)
-                map.flyTo(e.latlng, map.getZoom())
-            },
-        })
 
-        return position === null ? null : (
-            <Marker position={position}>
-                <Popup>You are here</Popup>
-            </Marker>
-        )
-    }
+    useEffect(() => {
+        const hasVisited = localStorage.getItem("hasVisited");
+        if (!hasVisited) {
+            setShowModal(true);
+            localStorage.setItem("hasVisited", "true");
+        }
+    }, []);
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
 
     return (
         <div className='space-y-10'>
+
+            {/* Special Offer popup */}
+            {showModal && (
+                <div className="modal modal-open">
+                    <div className="modal-box p-0 rounded-md shadow-2xl drop-shadow-2xl">
+                        <div>
+                            <figure className="relative w-full">
+                                <img className="rounded-md" src={offerImage} alt="Offer" />
+                                <button
+                                    onClick={handleCloseModal}
+                                    className="btn btn-sm btn-circle btn-ghost bg-white rounded-full absolute right-2 top-2"
+                                >
+                                    ✕
+                                </button>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+            )}
+
+            {/* banner section */}
             <Banner></Banner>
 
             {/* featured room */}
@@ -72,6 +92,7 @@ const HomePage = () => {
                 <h2 className='text-3xl font-semibold text-center text-secondary my-8'>User Reviews</h2>
                 <Testimonial></Testimonial>
             </section>
+
         </div>
     );
 };
