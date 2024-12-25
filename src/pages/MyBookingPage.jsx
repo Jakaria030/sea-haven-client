@@ -10,6 +10,7 @@ import { errorAlert, successAlert } from '../toastify/toastify';
 import NoDataFound from '../components/NoDataFound';
 import Loader from '../loader/Loader';
 import Swal from 'sweetalert2';
+import Title from '../components/Title';
 
 const MyBookingPage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
@@ -158,6 +159,7 @@ const MyBookingPage = () => {
 
     return (
         <div>
+            <Title title={'My Bookings'}></Title>
             {/* Banner title */}
             <TitleBanner
                 title={'My Bookings Room'}

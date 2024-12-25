@@ -4,6 +4,7 @@ import TitleBanner from "../components/TitleBanner";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Review from "../components/Review";
+import Title from "../components/Title";
 
 const RoomDetailsPage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
@@ -45,6 +46,7 @@ const RoomDetailsPage = () => {
 
     return (
         <div className="space-y-10 mb-10">
+            <Title title={'Room Details'}></Title>
             {/* title banner */}
             <TitleBanner title={roomDetails.room_name}></TitleBanner>
 

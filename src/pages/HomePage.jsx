@@ -5,6 +5,7 @@ import axios from 'axios';
 import HotelMap from '../components/HotelMap';
 import Testimonial from '../components/Testimonial';
 import offerImage from '../assets/offer.png';
+import Title from '../components/Title';
 
 
 const HomePage = () => {
@@ -44,6 +45,7 @@ const HomePage = () => {
 
     return (
         <div className='space-y-10'>
+            <Title title={'Home'}></Title>
 
             {/* Special Offer popup */}
             {showModal && (
@@ -88,9 +90,11 @@ const HomePage = () => {
             </section>
 
             {/* User Review */}
-            <section className='max-w-8xl mx-auto px-5 pb-10'>
-                <h2 className='text-3xl font-semibold text-center text-secondary my-8'>User Reviews</h2>
+            <section className='bg-primary/20 pb-10'>
+                <h2 className='text-3xl pt-10 font-semibold text-center text-secondary my-8'>User Reviews</h2>
+                <div className='max-w-8xl mx-auto px-5'>
                 <Testimonial></Testimonial>
+                </div>
             </section>
 
         </div>

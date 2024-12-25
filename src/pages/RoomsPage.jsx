@@ -4,6 +4,7 @@ import { useState } from "react";
 import RoomCard from "../components/RoomCard";
 import NoDataFound from "../components/NoDataFound";
 import Loader from "../loader/Loader";
+import Title from "../components/Title";
 
 
 const RoomsPage = () => {
@@ -55,6 +56,7 @@ const RoomsPage = () => {
 
     return (
         <div>
+            <Title title={'Rooms'}></Title>
             {/* filter by price range */}
             <section className='bg-primary py-8'>
                 <form onSubmit={handleFilterForm} className='flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3 px-5'>

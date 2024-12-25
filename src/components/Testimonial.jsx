@@ -66,7 +66,7 @@ const Testimonial = () => {
             >
                 {
                     reviews.map(review => <SwiperSlide key={review?._id}>
-                        <div className="space-y-3 bg-primary/20 p-5 rounded-md flex flex-col justify-between">
+                        <div className="space-y-3 bg-primary/40 p-5 rounded-md flex flex-col justify-between">
                             <div className="flex justify-start items-center gap-5">
                                 <figure className="w-16 h-16 ring-2 rounded-full ring-white">
                                     <img className="w-full h-full rounded-full" src={review?.photoURL} alt="User" />

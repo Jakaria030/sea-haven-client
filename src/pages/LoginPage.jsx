@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
 import { errorAlert, successAlert } from '../toastify/toastify';
 import Spinner from '../loader/Spinner';
+import Title from '../components/Title';
 
 
 const LoginPage = () => {
@@ -53,6 +54,7 @@ const LoginPage = () => {
 
     return (
         <section className='w-full h-screen flex items-center justify-center bg-light'>
+            <Title title={'Login'}></Title>
             <div className='basis-full sm:basis-10/12 lg:basis-1/2 flex flex-col sm:flex-row items-center justify-center rounded-lg shadow-xl bg-white mx-5'>
                 {/* left content */}
                 <div className='basis-2/3 py-5 sm:py-0 px-4 sm:px-12 text-center relative'>
