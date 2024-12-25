@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { MdOutlineRateReview, MdUpdate } from "react-icons/md";
-import { AuthContext } from "../provider/AuthProvider";
-import axios from "axios";
-import TitleBanner from "../components/TitleBanner";
-import { format } from "date-fns";
+import { useContext, useEffect, useState } from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa';
+import { MdOutlineRateReview, MdUpdate } from 'react-icons/md';
+import { AuthContext } from '../provider/AuthProvider';
+import axios from 'axios';
+import TitleBanner from '../components/TitleBanner';
+import { format } from 'date-fns';
 
 const MyBookingPage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
@@ -28,7 +28,6 @@ const MyBookingPage = () => {
             } catch (err) {
                 setError(err.message);
             } finally {
-                setError(null);
                 setIsLoading(false);
             }
         };
@@ -52,10 +51,10 @@ const MyBookingPage = () => {
                     : error ? ('error...')
                         : (
                             <section className='max-w-8xl mx-auto px-5'>
-                                <div className="overflow-x-scroll min-w-7xl py-10">
-                                    <table className="table min-w-[1024px]">
-                                        <thead className="bg-primary/50 text-lg text-secondary text-center">
-                                            <tr className="h-10">
+                                <div className='overflow-x-scroll min-w-7xl py-10'>
+                                    <table className='table min-w-[1024px]'>
+                                        <thead className='bg-primary/50 text-lg text-secondary text-center'>
+                                            <tr className='h-10'>
                                                 <th>Image</th>
                                                 <th>Name</th>
                                                 <th>Price</th>
@@ -63,20 +62,20 @@ const MyBookingPage = () => {
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="text-lg text-secondary text-center items-center">
+                                        <tbody className='text-lg text-secondary text-center items-center'>
                                             {
                                                 bookingDetails.map(bookingDetail => {
                                                     const room = getRoom(bookingDetail.roomId);
 
                                                     if (!room) return null;
 
-                                                    const bookingDate = format(new Date(bookingDetail.bookingDate), 'dd-mm-yyyy');
-                                                    const checkInDate = format(new Date(bookingDetail.checkInDate), 'dd-mm-yyyy');
+                                                    const bookingDate = format(new Date(bookingDetail.bookingDate), 'dd-MM-yyyy');
+                                                    const checkInDate = format(new Date(bookingDetail.checkInDate), 'dd-MM-yyyy');
 
-                                                    return (<tr key={bookingDetail._id} className="bg-primary/20">
+                                                    return (<tr key={bookingDetail._id} className='bg-primary/20 hover:bg-primary/50 transition-all ease-in-out duration-150'>
                                                         <td>
-                                                            <figure className="w-60 ring-4 ring-white rounded-md mx-auto">
-                                                                <img className="w-full h-full rounded-md mx-auto" src={room.room_image} />
+                                                            <figure className='w-60 ring-4 ring-white rounded-md mx-auto'>
+                                                                <img className='w-full h-full rounded-md mx-auto' src={room.room_image} />
                                                             </figure>
                                                         </td>
                                                         <td>{room.room_name}</td>

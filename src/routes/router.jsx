@@ -10,6 +10,7 @@ import axios from 'axios';
 import MyBookingPage from '../pages/MyBookingPage';
 import ContactPage from '../pages/ContactPage';
 import AboutPage from '../pages/AboutPage';
+import PrivateRoute from './PrivateRoute';
 
 const baseURL = import.meta.env.VITE_RootURL;
 
@@ -44,7 +45,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/my-bookings-page',
-        element: <MyBookingPage></MyBookingPage>,
+        element: <PrivateRoute>
+          <MyBookingPage></MyBookingPage>
+        </PrivateRoute>,
       },
       {
         path: '/contact-page',

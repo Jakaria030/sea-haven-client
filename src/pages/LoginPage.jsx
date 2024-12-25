@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 import loginRegisterLottie from '../assets/animations/login-register-lottie.json';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaFacebook, FaGithub, FaGoogle, FaKey } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { useContext } from 'react';
@@ -13,8 +13,9 @@ const LoginPage = () => {
 
     const {signInUser, setUser, loading, setLoading, signInWithGoogle} = useContext(AuthContext);
     const navigate = useNavigate();
+    const {state} = useLocation();
 
-
+    
     const handleLoginForm = (e) => {
         e.preventDefault();
 
@@ -28,7 +29,7 @@ const LoginPage = () => {
             setUser(result.user);
             form.reset();
             successAlert('You have successfully logged in using your email.');
-                navigate(`/`);
+            navigate(`${state ? state : '/'}`);
         })
         .catch(err => {
             errorAlert('Please enter valid credentials.');
@@ -42,7 +43,7 @@ const LoginPage = () => {
         .then(result => {
             setUser(result.user);
             successAlert('You have successfully logged in using Google.');
-            navigate(`/`);
+            navigate(`${state ? state : '/'}`);
         })
         .catch(err => {
             errorAlert('Login failed!');

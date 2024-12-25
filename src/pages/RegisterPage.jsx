@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 import loginRegisterLottie from '../assets/animations/login-register-lottie.json';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaFacebook, FaGithub, FaGoogle, FaImage, FaKey, FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { useContext } from 'react';
@@ -53,7 +53,7 @@ const RegisterPage = () => {
             .then(() => {
                 form.reset();
                 successAlert('Your have successfully completed registration.');
-                navigate(`/`);
+                navigate('/');
 
             })
             .catch(err => {
@@ -73,7 +73,7 @@ const RegisterPage = () => {
         .then(result => {
             setUser(result.user);
             successAlert('You have successfully logged in using Google.');
-            navigate(`/`);
+            navigate('/');
         })
         .catch(err => {
             errorAlert('Login failed!');

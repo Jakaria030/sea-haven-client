@@ -1,4 +1,3 @@
-import { FaUserCircle } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
@@ -12,7 +11,7 @@ const Navbar = () => {
     const links = <>
         <NavLink to='/home-page' className='lg:hover:text-primary transition-colors duration-100'>Home</NavLink>
         <NavLink to='/room-page' className='lg:hover:text-primary transition-colors duration-100'>Rooms</NavLink>
-        <NavLink to='/my-bookings-page' className='lg:hover:text-primary transition-colors duration-100'>My Bookings</NavLink>
+        {(user && user?.email) && (<NavLink to='/my-bookings-page' className='lg:hover:text-primary transition-colors duration-100'>My Bookings</NavLink>)}
         <NavLink to='/contact-page' className='lg:hover:text-primary transition-colors duration-100'>Contact</NavLink>
         <NavLink to='/about-page' className='lg:hover:text-primary transition-colors duration-100'>About</NavLink>
     </>;
