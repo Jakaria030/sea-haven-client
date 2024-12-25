@@ -1,5 +1,5 @@
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
@@ -7,6 +7,7 @@ import { errorAlert, successAlert } from '../toastify/toastify';
 
 const Navbar = () => {
     const { user, signOutUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const links = <>
         <NavLink to='/home-page' className='lg:hover:text-primary transition-colors duration-100'>Home</NavLink>
@@ -21,6 +22,7 @@ const Navbar = () => {
         signOutUser()
         .then(() => {
             successAlert('You have been logged out successfully.');
+            navigate('/');
         })
         .catch(err => {
             errorAlert(err.message);

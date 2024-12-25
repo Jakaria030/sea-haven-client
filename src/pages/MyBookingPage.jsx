@@ -5,6 +5,8 @@ import { AuthContext } from '../provider/AuthProvider';
 import axios from 'axios';
 import TitleBanner from '../components/TitleBanner';
 import { format } from 'date-fns';
+import DatePicker from 'react-datepicker';
+import { errorAlert, successAlert } from '../toastify/toastify';
 
 const MyBookingPage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
@@ -14,6 +16,8 @@ const MyBookingPage = () => {
     const [bookingDetails, setBookingDetails] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [reviewDate, setReviewDate] = useState(new Date());
+    const [currRoomId, setCorrRoomId] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,8 +39,44 @@ const MyBookingPage = () => {
         fetchData();
     }, [user]);
 
+    // find room with id
     const getRoom = (id) => {
         return rooms.find(room => room._id === id);
+    };
+
+    // handle show modal
+    const handleShowModal = (_id) => {
+        setCorrRoomId(_id);
+        document.getElementById('review_modal').showModal();
+    };
+
+
+    // handle review form
+    const handleReview = (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const roomId = currRoomId;
+        const name = user.displayName;
+        const email = user.email;
+        const photoURL = user.photoURL;
+        const rating = parseInt(form.rating.value);
+        const comment = form.comment.value;
+
+        const newReview = {roomId, name, email, photoURL, rating, comment, reviewDate};
+
+        const postData = async () => {
+            try{
+                const { data } = await axios.post(`${baseURL}/review-room`, {newReview});
+                successAlert('Thanks for giving a review.');
+                form.reset();
+                // close modal
+                document.getElementById('close_modal').click();
+            }catch(err){
+                errorAlert(err.message);
+            }
+        };
+        postData();
     };
 
     return (
@@ -85,7 +125,7 @@ const MyBookingPage = () => {
                                                             <p>Check-in Date: {checkInDate}</p>
                                                         </td>
                                                         <td className='flex flex-col items-center justify-center gap-2'>
-                                                            <button className='flex items-center justify-center px-4 py-2 bg-primary rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out
+                                                            <button onClick={() => handleShowModal(room._id)} className='flex items-center justify-center px-4 py-2 bg-primary rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out
                                                             '>
                                                                 <MdOutlineRateReview className='text-2xl font-semibold' />
                                                                 <span className='text-lg font-medium'>Review</span>
@@ -101,7 +141,7 @@ const MyBookingPage = () => {
                                                             '>
                                                                 <FaRegTrashAlt className='text-2xl font-semibold' />
                                                                 <span className='text-lg font-medium'>Cancel</span>
-                                                            </button>                                    
+                                                            </button>
                                                         </td>
                                                     </tr>);
                                                 })
@@ -112,6 +152,42 @@ const MyBookingPage = () => {
                             </section>
                         )
             }
+
+            {/* review modal */}
+            {/* You can open the modal using document.getElementById('ID').showModal() method */}
+            <dialog id='review_modal' className='modal'>
+                <div className='modal-box rounded-md'>
+                    <form method='dialog'>
+                        {/* if there is a button in form, it will close the modal */}
+                        <button id='close_modal' className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'>✕</button>
+                    </form>
+                    {/* modal body */}
+                    <div>
+                        <div className='lg:px-5 flex flex-col space-y-3 py-5 lg:py-0'>
+                            {/* confirm booking form */}
+                            <form onSubmit={handleReview} className='space-y-3'>
+                                <h2 className='text-xl text-center font-medium text-secondary'>Give A Review</h2>
+                                <label className='input input-bordered flex items-center gap-2'>
+                                    <input type='text' name='name' className='grow' placeholder='Name' defaultValue={user?.displayName} readOnly />
+                                </label>
+                                <label className='input input-bordered flex items-center'>
+                                    <DatePicker
+                                        selected={reviewDate}
+                                        onChange={(date) => setReviewDate(date)}
+                                        dateFormat='yyyy-MM-dd'
+                                        readOnly
+                                    />
+                                </label>
+                                <label className='input input-bordered flex items-center gap-2'>
+                                    <input type='number' min={1} max={5} name='rating' className='grow' placeholder='Rating(1-5)' required />
+                                </label>
+                                <textarea placeholder='Comment' name='comment' className='textarea textarea-bordered w-full' required></textarea>
+                                <button className='w-full px-6 py-2 bg-primary text-secondary font-semibold text-lg rounded-md active:scale-95 transition-all duration-150 ease-in-out'>Submit Review</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </dialog>
 
         </div>
     );

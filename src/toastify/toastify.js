@@ -2,7 +2,7 @@ import { Bounce, toast } from "react-toastify";
 
 const toastConfig = {
     position: "top-center",
-    autoClose: 3000,
+    autoClose: 2000,
     theme: "light",
     transition: Bounce,
 };
