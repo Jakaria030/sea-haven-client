@@ -127,7 +127,7 @@ const MyBookingPage = () => {
             if (result.isConfirmed) {
 
                 const fetchData = async () => {
-                    const { data } = await axios.get(`${baseURL}/booked-room/${_id}`);
+                    const { data } = await axios.get(`${baseURL}/single-room-get?room_id=${_id}&user_email=${user.email}`);
 
                     const today = new Date();
                     const checkInDate = new Date(data.checkInDate);

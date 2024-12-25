@@ -48,6 +48,14 @@ const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
 
         const postData = async () => {
             try {
+                const res1 = await axios.get(`${baseURL}/single-room-get?room_id=${_id}&user_email=${user.email}`);
+                if (res1.data) {
+                    errorAlert('Sorry! You have already booked this room previous. Now you can Update Check in date');
+                    // close modal
+                    document.getElementById('close_modal').click();
+                    return;
+                }
+
                 const { data } = await axios.post(`${baseURL}/booked-room`, { newBooking });
                 if (data.acknowledged) {
                     const res = await axios.patch(`${baseURL}/rooms/${_id}`, {
