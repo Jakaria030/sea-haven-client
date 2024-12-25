@@ -55,7 +55,7 @@ const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
                     });
 
                     successAlert(`Congrats, You have booked the '${room_name}'.`);
-                    navigate('/room-page');
+                    navigate('/my-bookings-page');
                 } else {
                     errorAlert(`Sorry, the room '${room.room_name}' is not booked.`);
                 }
