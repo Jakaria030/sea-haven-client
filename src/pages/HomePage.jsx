@@ -3,6 +3,7 @@ import Banner from '../components/Banner';
 import TopRoomCard from '../components/TopRoomCard';
 import axios from 'axios';
 import HotelMap from '../components/HotelMap';
+import Testimonial from '../components/Testimonial';
 
 const HomePage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
@@ -61,9 +62,15 @@ const HomePage = () => {
             </section>
 
             {/* our location */}
-            <section className='max-w-8xl mx-auto px-5 pb-10'>
+            <section className='max-w-8xl mx-auto px-5'>
                 <h2 className='text-3xl font-semibold text-center text-secondary my-8'>Our Location</h2>
                 <HotelMap></HotelMap>
+            </section>
+
+            {/* User Review */}
+            <section className='max-w-8xl mx-auto px-5 pb-10'>
+                <h2 className='text-3xl font-semibold text-center text-secondary my-8'>User Reviews</h2>
+                <Testimonial></Testimonial>
             </section>
         </div>
     );

@@ -19,12 +19,12 @@ const HotelMap = () => {
   const hotelPosition = [23.012325109575148, 89.83454076076065];
 
   return (
-    <div className="h-[400px] w-full m-auto rounded-md border-2 border-white">
+    <div className="h-[400px] w-full m-auto rounded-md border-2 border-white z-0">
       <MapContainer
         center={hotelPosition}
         zoom={13}
         scrollWheelZoom={false}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%", }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
