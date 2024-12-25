@@ -11,12 +11,22 @@ const RoomDetailsPage = () => {
 
     const roomDetails = useLoaderData();
     const [reviews, setReviews] = useState(null);
+    const [totalReviews, setTotalReviews] = useState(0);
+    const [totalRatings, setTotalRatings] = useState(0);
 
     useEffect(() => {
         const getData = async () => {
             try {
                 const { data } = await axios.get(`${baseURL}/reviews/${roomDetails._id}`);
                 setReviews(data);
+                setTotalReviews(data.length);
+
+                let count = 0;
+                for(const review of data){
+                    count = count + review['rating'];
+                }
+
+                setTotalRatings(count);
             } catch (err) {
                 errorAlert(err.message);
             }
@@ -35,9 +45,15 @@ const RoomDetailsPage = () => {
 
             {/* room details */}
             <section className='max-w-8xl mx-auto px-5'>
-                <RoomDetailsCard
-                    roomDetails={roomDetails}
-                ></RoomDetailsCard>
+                {
+                    roomDetails && (
+                        <RoomDetailsCard
+                            roomDetails={roomDetails}
+                            totalRatings={totalRatings}
+                            totalReviews={totalReviews}
+                        ></RoomDetailsCard>
+                    )
+                }
             </section>
 
             {/* user reviews */}
@@ -45,6 +61,7 @@ const RoomDetailsPage = () => {
                 {
                     reviews &&
                     (
+                        
                         <div className="grid grid-cols-1 gap-5">
                             {reviews.map(review => <Review
                                 key={review._id}

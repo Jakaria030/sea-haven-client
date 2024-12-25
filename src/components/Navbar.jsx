@@ -1,5 +1,5 @@
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { useContext } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
@@ -8,6 +8,7 @@ import { errorAlert, successAlert } from '../toastify/toastify';
 const Navbar = () => {
     const { user, signOutUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const links = <>
         <NavLink to='/home-page' className='lg:hover:text-primary transition-colors duration-100'>Home</NavLink>
@@ -74,7 +75,7 @@ const Navbar = () => {
                                         className='menu menu-md dropdown-content rounded-sm z-[1] mt-5 shadow bg-white right-0'>
                                         <button onClick={handleSignOutUser} className='px-4 py-2 rounded-sm bg-primary font-semibold text-secondary'>Logout</button>
                                     </ul>
-                                </div> : <NavLink to='/login-page'><button className='px-4 py-2 rounded-sm bg-primary font-semibold text-secondary'>Login</button></NavLink>
+                                </div> : <NavLink to='/login-page' state={location?.pathname}><button className='px-4 py-2 rounded-sm bg-primary font-semibold text-secondary'>Login</button></NavLink>
                             }
                         </div>
                     </div>

@@ -1,7 +1,15 @@
+import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
-const RoomSummary = ({ roomDetails }) => {
-    const { _id, room_name, room_image, room_price, room_description, is_booked, features, facilities, guest } = roomDetails;
+const RoomSummary = ({ roomDetails, totalRatings, totalReviews }) => {
+    const {room_name, room_price, room_description, is_booked, features, facilities, guest } = roomDetails;
+    
+    const ratings = [];
+    for (let i = 1; i <= 5; i++){
+      ratings.push(i);
+    }
+
+
     return (
         <>
             {/* name and ratings */}
@@ -12,13 +20,18 @@ const RoomSummary = ({ roomDetails }) => {
                         is_booked ? <sup className="badge badge-warning text-secondary">Booked</sup> : <sup className="badge badge-accent text-secondary">Available</sup>
                     }
                 </div>
-                <div className='flex items-center text-orange-500'>
-                    <FaStar></FaStar>
-                    <FaStar></FaStar>
-                    <FaStar></FaStar>
-                    <FaStar></FaStar>
-                    <FaStar></FaStar>
-                    <span>(100)</span>
+                <div className='flex items-center'>
+                    {/* rating here */}
+                    {
+                        ratings.map(rating => {
+                            if(rating <= Math.ceil(totalRatings/totalReviews)){
+                                return <FaStar key={rating} className="text-xl text-orange-400"></FaStar>
+                            }else{
+                                return <FaStar key={rating} className="text-xl text-gray-400"></FaStar>
+                            }
+                        })
+                    }
+                    <span className="text-xl text-gray-400-400 ml-2">({totalReviews})</span>
                 </div>
             </div>
 

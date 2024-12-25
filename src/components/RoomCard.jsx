@@ -1,8 +1,22 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const RoomCard = ({ room }) => {
+    const baseURL = import.meta.env.VITE_RootURL;
     const {_id, room_name, room_image, room_price, is_booked} = room;
+    const [totalReviews, setTotalReviews] = useState(0);
+
+    useEffect(() => {
+        const fetchReview = async() => {
+            const {data} = await axios.get(`${baseURL}/count-reviews/${_id}`)
+            setTotalReviews(data.count);
+        };
+
+        if(_id){
+            fetchReview();
+        }
+    }, []);
 
     return (
         <Link to={`/room-details/${_id}`} className='bg-white rounded-md '>
@@ -18,7 +32,7 @@ const RoomCard = ({ room }) => {
                 </div>
                 <div className='text-center py-2 space-y-2'>
                     <h1><span className='text-2xl font-semibold'>${room_price}/</span><sub className='text-lg font-medium'>per night</sub> </h1>
-                    <p>100 reviews</p>
+                    <p className='text-secondary font-medium'>{totalReviews} reviews</p>
                 </div>
             </div>
         </Link>

@@ -5,10 +5,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { AuthContext } from '../provider/AuthProvider';
 import axios from 'axios';
 import { errorAlert, successAlert } from '../toastify/toastify';
-import {useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
-const RoomDetailsCard = ({ roomDetails }) => {
+const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
     const baseURL = import.meta.env.VITE_RootURL;
 
     const { _id, room_image, room_name, is_booked } = roomDetails;
@@ -22,12 +22,11 @@ const RoomDetailsCard = ({ roomDetails }) => {
         return;
     }
 
-
     // handle show modal
     const handleShowModal = () => {
-        if(!(user && user?.email)){
+        if (!(user && user?.email)) {
             errorAlert('Please login to booked room.');
-            navigate('/login-page', {state:location.pathname});
+            navigate('/login-page', { state: location.pathname });
             return;
         }
 
@@ -37,7 +36,7 @@ const RoomDetailsCard = ({ roomDetails }) => {
     // handle booking form
     const handleBookingForm = (e) => {
         e.preventDefault();
-        const { displayName, photoURL, email } = user;
+        const { email } = user;
         const newBooking = {
             roomId: _id,
             email,
@@ -46,21 +45,21 @@ const RoomDetailsCard = ({ roomDetails }) => {
         };
 
         const postData = async () => {
-            try{
-                const { data } = await axios.post(`${baseURL}/booked-room`, {newBooking});
-                if(data.acknowledged){
+            try {
+                const { data } = await axios.post(`${baseURL}/booked-room`, { newBooking });
+                if (data.acknowledged) {
                     const res = await axios.patch(`${baseURL}/rooms/${_id}`, {
                         is_booked: true,
                     });
-                    
+
                     successAlert(`Congrats, You have booked the '${room_name}'.`);
                     navigate('/room-page');
-                }else{
+                } else {
                     errorAlert(`Sorry, the room '${room.room_name}' is not booked.`);
                 }
                 // close modal
                 document.getElementById('close_modal').click();
-            }catch(err){
+            } catch (err) {
                 errorAlert(err.message);
             }
         };
@@ -81,6 +80,8 @@ const RoomDetailsCard = ({ roomDetails }) => {
                 <RoomSummary
                     key={2}
                     roomDetails={roomDetails}
+                    totalRatings={totalRatings}
+                    totalReviews={totalReviews}
                 >
                 </RoomSummary>
 
@@ -105,6 +106,8 @@ const RoomDetailsCard = ({ roomDetails }) => {
                             <RoomSummary
                                 key={2}
                                 roomDetails={roomDetails}
+                                totalRatings={totalRatings}
+                                totalReviews={totalReviews}
                             >
                             </RoomSummary>
                             {/* confirm booking form */}
