@@ -42,7 +42,8 @@ const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
             roomId: _id,
             email,
             checkInDate,
-            bookingDate: new Date()
+            bookingDate: new Date(),
+            isCancel: false,
         };
 
         const postData = async () => {

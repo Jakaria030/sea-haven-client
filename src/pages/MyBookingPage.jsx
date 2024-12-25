@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { MdOutlineRateReview, MdUpdate } from 'react-icons/md';
 import { AuthContext } from '../provider/AuthProvider';
-import axios from 'axios';
+import axios, { isCancel } from 'axios';
 import TitleBanner from '../components/TitleBanner';
 import { differenceInDays, format } from 'date-fns';
 import DatePicker from 'react-datepicker';
@@ -21,6 +21,9 @@ const MyBookingPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [reviewDate, setReviewDate] = useState(new Date());
     const [currRoomId, setCorrRoomId] = useState(null);
+    const [render, setRender] = useState(true);
+    const [newDate, setNewDate] = useState(new Date());
+    const [currBookedId, setCurrBookedId] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,7 +43,7 @@ const MyBookingPage = () => {
         };
 
         fetchData();
-    }, [user]);
+    }, [user, render]);
 
     // find room with id
     const getRoom = (id) => {
@@ -66,24 +69,52 @@ const MyBookingPage = () => {
         const rating = parseInt(form.rating.value);
         const comment = form.comment.value;
 
-        const newReview = {roomId, name, email, photoURL, rating, comment, reviewDate};
+        const newReview = { roomId, name, email, photoURL, rating, comment, reviewDate };
 
         const postData = async () => {
-            try{
-                const { data } = await axios.post(`${baseURL}/review-room`, {newReview});
+            try {
+                const { data } = await axios.post(`${baseURL}/review-room`, { newReview });
                 successAlert('Thanks for giving a review.');
                 form.reset();
                 // close modal
                 document.getElementById('close_modal').click();
-            }catch(err){
+            } catch (err) {
                 errorAlert(err.message);
             }
         };
         postData();
     };
 
+    // update date 
+    const showUpdateModal = (booking_id, room_id) => {
+        setCurrBookedId(booking_id);
+        setCorrRoomId(room_id);
+        document.getElementById('update_modal').showModal();
+    }
+    const handleUpdateForm = (e) => {
+        e.preventDefault();
+        // console.log(newDate, currBookedId);
+
+        const updateData = async () => {
+            const { data } = await axios.patch(`${baseURL}/booked-room-release/${currBookedId}`, { bookingDate: new Date(), checkInDate: newDate, isCancel: false });
+
+            // update room status
+            const res = await axios.patch(`${baseURL}/rooms/${currRoomId}`, { is_booked: true });
+
+            if (data.acknowledged) {
+                successAlert('Check-in date updated.')
+                setRender(!render);
+                document.getElementById('close_update_modal').click();
+            } else {
+                errorAlert('Check-in date is not updated.')
+            }
+        };
+        updateData();
+
+    }
+
     // handle cancel booking
-    const handleCancelBooking = (_id) => {
+    const handleCancelBooking = (_id, booking_id) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to cancel the booking!",
@@ -92,35 +123,37 @@ const MyBookingPage = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, Cancel it!"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
 
-                const fetchData = async() => {
-                    const {data} = await axios.get(`${baseURL}/booked-room/${_id}`);
-                    
+                const fetchData = async () => {
+                    const { data } = await axios.get(`${baseURL}/booked-room/${_id}`);
+
                     const today = new Date();
                     const checkInDate = new Date(data.checkInDate);
 
                     const differenceDate = differenceInDays(checkInDate, today);
 
-                    if(differenceDate < 1){
+                    if (differenceDate < 1) {
                         errorAlert('Sorry! You have to cancel the booking atleast one day befor.')
                         return;
                     }
 
-                    // update room status
-                    const res = await axios.patch(`${baseURL}/rooms/${_id}`, {is_booked: false})
-                    if(res.data.modifiedCount){
-                        Swal.fire({
-                            title: "Canceled!",
-                            text: "Your booking has been canceled.",
-                            icon: "success"
-                          });
-                    }
+                    // update room status booking status
+                    const res1 = await axios.patch(`${baseURL}/rooms/${_id}`, { is_booked: false });
+                    const res2 = await axios.patch(`${baseURL}/booked-room/${booking_id}`, { isCancel: true });
+
+                    Swal.fire({
+                        title: "Canceled!",
+                        text: "Your booking has been canceled.",
+                        icon: "success"
+                    });
+                    setRender(!render);
+
                 }
                 fetchData();
             }
-          });
+        });
     };
 
     return (
@@ -132,7 +165,7 @@ const MyBookingPage = () => {
 
             {
                 isLoading ? <Loader></Loader>
-                    :(error || bookingDetails.length === 0) ? <NoDataFound></NoDataFound>
+                    : (error || bookingDetails.length === 0) ? <NoDataFound></NoDataFound>
                         : (
                             <section className='max-w-8xl mx-auto px-5'>
                                 <div className='overflow-x-scroll min-w-7xl py-10'>
@@ -166,7 +199,7 @@ const MyBookingPage = () => {
                                                         <td>${room.room_price}</td>
                                                         <td>
                                                             <p>Booking Date: {bookingDate}</p>
-                                                            <p>Check-in Date: {checkInDate}</p>
+                                                            <p>Check-in Date: {bookingDetail.isCancel ? 'Booking Cancel' : checkInDate}</p>
                                                         </td>
                                                         <td className='flex flex-col items-center justify-center gap-2'>
                                                             <button onClick={() => handleShowModal(room._id)} className='flex items-center justify-center px-4 py-2 bg-primary rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out
@@ -175,13 +208,13 @@ const MyBookingPage = () => {
                                                                 <span className='text-lg font-medium'>Review</span>
                                                             </button>
 
-                                                            <button className='flex items-center justify-center px-4 py-2 bg-[#10B981] rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out
+                                                            <button onClick={() => showUpdateModal(bookingDetail._id, room._id)} className='flex items-center justify-center px-4 py-2 bg-[#10B981] rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out
                                                             '>
                                                                 <MdUpdate className='text-2xl font-semibold' />
                                                                 <span className='text-lg font-medium'>Update</span>
                                                             </button>
 
-                                                            <button onClick={() => handleCancelBooking(room._id)} className='flex items-center justify-center px-4 py-2 bg-[#F87171] rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out
+                                                            <button disabled={bookingDetail.isCancel} onClick={() => handleCancelBooking(room._id, bookingDetail._id)} className='flex items-center justify-center px-4 py-2 bg-[#F87171] rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed
                                                             '>
                                                                 <FaRegTrashAlt className='text-2xl font-semibold' />
                                                                 <span className='text-lg font-medium'>Cancel</span>
@@ -233,6 +266,33 @@ const MyBookingPage = () => {
                 </div>
             </dialog>
 
+
+            {/* for updated date  */}
+            <dialog id='update_modal' className='modal'>
+                <div className='modal-box rounded-md'>
+                    <form method='dialog'>
+                        {/* if there is a button in form, it will close the modal */}
+                        <button id='close_update_modal' className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'>✕</button>
+                    </form>
+                    {/* modal body */}
+                    <div>
+                        <div className='lg:px-5 flex flex-col space-y-3 py-5 lg:py-0'>
+
+                            <form onSubmit={handleUpdateForm} className='space-y-3'>
+                                <h2 className='text-xl text-center font-medium text-secondary'>Give A New Chechk-in Date</h2>
+                                <label className='input input-bordered flex items-center'>
+                                    <DatePicker
+                                        selected={newDate}
+                                        onChange={(date) => setNewDate(date)}
+                                        dateFormat='yyyy-MM-dd'
+                                    />
+                                </label>
+                                <button className='w-full px-6 py-2 bg-primary text-secondary font-semibold text-lg rounded-md active:scale-95 transition-all duration-150 ease-in-out'>Update Date</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </dialog>
         </div>
     );
 };
