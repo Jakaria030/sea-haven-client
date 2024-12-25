@@ -3,7 +3,6 @@ import RoomDetailsCard from "../components/RoomDetailsCard";
 import TitleBanner from "../components/TitleBanner";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { errorAlert } from "../toastify/toastify";
 import Review from "../components/Review";
 
 const RoomDetailsPage = () => {
@@ -11,12 +10,17 @@ const RoomDetailsPage = () => {
 
     const roomDetails = useLoaderData();
     const [reviews, setReviews] = useState(null);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [totalReviews, setTotalReviews] = useState(0);
     const [totalRatings, setTotalRatings] = useState(0);
 
     useEffect(() => {
         const getData = async () => {
             try {
+                setIsLoading(true);
+                setError(null);
+
                 const { data } = await axios.get(`${baseURL}/reviews/${roomDetails._id}`);
                 setReviews(data);
                 setTotalReviews(data.length);
@@ -25,10 +29,11 @@ const RoomDetailsPage = () => {
                 for(const review of data){
                     count = count + review['rating'];
                 }
-
                 setTotalRatings(count);
             } catch (err) {
-                errorAlert(err.message);
+                setError(err.message);
+            } finally{
+                setIsLoading(false);
             }
         };
 

@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import RoomCard from "../components/RoomCard";
+import NoDataFound from "../components/NoDataFound";
+import Loader from "../loader/Loader";
 
 
 const RoomsPage = () => {
@@ -40,14 +42,18 @@ const RoomsPage = () => {
 
             {/* room cards */}
             <section className='max-w-8xl mx-auto px-5 py-8 sm:py-12'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
                     {
-                        rooms.map(room => <RoomCard
-                            key={room._id}
-                            room={room}
-                        ></RoomCard>)
+                        isLoading ? <Loader></Loader>
+                        : (error || rooms.length === 0) ? <NoDataFound></NoDataFound>
+                        : <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
+                            {
+                                rooms.map(room => <RoomCard
+                                    key={room._id}
+                                    room={room}
+                                ></RoomCard>)
+                            }
+                        </div>
                     }
-                </div>
             </section>
         </div>
     );

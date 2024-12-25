@@ -4,9 +4,12 @@ import { MdOutlineRateReview, MdUpdate } from 'react-icons/md';
 import { AuthContext } from '../provider/AuthProvider';
 import axios from 'axios';
 import TitleBanner from '../components/TitleBanner';
-import { format } from 'date-fns';
+import { differenceInDays, format } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import { errorAlert, successAlert } from '../toastify/toastify';
+import NoDataFound from '../components/NoDataFound';
+import Loader from '../loader/Loader';
+import Swal from 'sweetalert2';
 
 const MyBookingPage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
@@ -79,6 +82,47 @@ const MyBookingPage = () => {
         postData();
     };
 
+    // handle cancel booking
+    const handleCancelBooking = (_id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to cancel the booking!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+                const fetchData = async() => {
+                    const {data} = await axios.get(`${baseURL}/booked-room/${_id}`);
+                    
+                    const today = new Date();
+                    const checkInDate = new Date(data.checkInDate);
+
+                    const differenceDate = differenceInDays(checkInDate, today);
+
+                    if(differenceDate < 1){
+                        errorAlert('Sorry! You have to cancel the booking atleast one day befor.')
+                        return;
+                    }
+
+                    // update room status
+                    const res = await axios.patch(`${baseURL}/rooms/${_id}`, {is_booked: false})
+                    if(res.data.modifiedCount){
+                        Swal.fire({
+                            title: "Canceled!",
+                            text: "Your booking has been canceled.",
+                            icon: "success"
+                          });
+                    }
+                }
+                fetchData();
+            }
+          });
+    };
+
     return (
         <div>
             {/* Banner title */}
@@ -87,8 +131,8 @@ const MyBookingPage = () => {
             ></TitleBanner>
 
             {
-                isLoading ? ('Loading...')
-                    : error ? ('error...')
+                isLoading ? <Loader></Loader>
+                    :(error || bookingDetails.length === 0) ? <NoDataFound></NoDataFound>
                         : (
                             <section className='max-w-8xl mx-auto px-5'>
                                 <div className='overflow-x-scroll min-w-7xl py-10'>
@@ -137,7 +181,7 @@ const MyBookingPage = () => {
                                                                 <span className='text-lg font-medium'>Update</span>
                                                             </button>
 
-                                                            <button className='flex items-center justify-center px-4 py-2 bg-[#F87171] rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out
+                                                            <button onClick={() => handleCancelBooking(room._id)} className='flex items-center justify-center px-4 py-2 bg-[#F87171] rounded-md gap-1 text-secondary active:scale-95 transition-all duration-150 ease-in-out
                                                             '>
                                                                 <FaRegTrashAlt className='text-2xl font-semibold' />
                                                                 <span className='text-lg font-medium'>Cancel</span>

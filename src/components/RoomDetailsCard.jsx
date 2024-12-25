@@ -6,6 +6,7 @@ import { AuthContext } from '../provider/AuthProvider';
 import axios from 'axios';
 import { errorAlert, successAlert } from '../toastify/toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Loader from '../loader/Loader';
 
 
 const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
@@ -19,7 +20,7 @@ const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
 
     // loading state
     if (loading) {
-        return;
+        return <Loader></Loader>;
     }
 
     // handle show modal
