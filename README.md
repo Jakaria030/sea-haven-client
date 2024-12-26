@@ -10,7 +10,7 @@ Sea Haven is a web-based hotel booking platform designed to provide users with a
 ## Key Features
 **🏨 Easy Room Booking** <br>
 **📋 View Detailed Room Information** <br>
-**🛏️ Filter Rooms by Price Range** <br>
+**💲 Filter Rooms by Price Range** <br>
 **🔒 Secure Online Booking System** <br>
 **🎫 Special Offer Coupon** <br>
 **🗯️ User Review System** <br>
