@@ -48,7 +48,7 @@ const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
 
         const postData = async () => {
             try {
-                const res1 = await axios.get(`${baseURL}/single-room-get?room_id=${_id}&user_email=${user.email}`);
+                const res1 = await axios.get(`${baseURL}/single-room-get?room_id=${_id}&user_email=${user.email}`, {withCredentials: true});
                 if (res1.data) {
                     errorAlert('Sorry! You have already booked this room previous. Now you can Update Check in date');
                     // close modal
@@ -70,6 +70,7 @@ const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
                 // close modal
                 document.getElementById('close_modal').click();
             } catch (err) {
+                document.getElementById('close_modal').click();
                 errorAlert(err.message);
             }
         };

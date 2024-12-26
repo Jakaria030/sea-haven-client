@@ -32,7 +32,7 @@ const MyBookingPage = () => {
                 setIsLoading(true);
                 setError(null);
                 // Fetch both booked rooms and room details from the server
-                const { data } = await axios.get(`${baseURL}/booked-room?email=${user.email}`, {withCredentials: true});
+                const { data } = await axios.get(`${baseURL}/booked-room?email=${user.email}`, { withCredentials: true });
                 setRooms(data.rooms);
                 setBookingDetails(data.bookings);
 
@@ -75,7 +75,7 @@ const MyBookingPage = () => {
 
         const postData = async () => {
             try {
-                const { data } = await axios.post(`${baseURL}/review-room`, { newReview });
+                const { data } = await axios.post(`${baseURL}/review-room`, { newReview }, { withCredentials: true });
                 successAlert('Thanks for giving a review.');
                 form.reset();
                 // close modal
@@ -129,27 +129,31 @@ const MyBookingPage = () => {
             if (result.isConfirmed) {
 
                 const fetchData = async () => {
-                    const { data } = await axios.get(`${baseURL}/single-room-get?room_id=${_id}&user_email=${user.email}`);
+                    try {
+                        const { data } = await axios.get(`${baseURL}/single-room-get?room_id=${_id}&user_email=${user.email}`, { withCredentials: true });
 
-                    const today = new Date();
-                    const checkInDate = new Date(data.checkInDate);
+                        const today = new Date();
+                        const checkInDate = new Date(data.checkInDate);
 
-                    const differenceDate = differenceInDays(checkInDate, today);
+                        const differenceDate = differenceInDays(checkInDate, today);
 
-                    if (differenceDate < 1) {
-                        errorAlert('Sorry! You have to cancel the booking atleast one day befor.')
-                        return;
+                        if (differenceDate < 1) {
+                            errorAlert('Sorry! You have to cancel the booking atleast one day befor.')
+                            return;
+                        }
+
+                        // update room status booking status
+                        const res1 = await axios.patch(`${baseURL}/rooms/${_id}`, { is_booked: false });
+                        const res2 = await axios.patch(`${baseURL}/booked-room/${booking_id}`, { isCancel: true });
+
+                        Swal.fire({
+                            title: "Canceled!",
+                            text: "Your booking has been canceled.",
+                            icon: "success"
+                        });
+                    } catch (err) {
+                        errorAlert(err.message);
                     }
-
-                    // update room status booking status
-                    const res1 = await axios.patch(`${baseURL}/rooms/${_id}`, { is_booked: false });
-                    const res2 = await axios.patch(`${baseURL}/booked-room/${booking_id}`, { isCancel: true });
-
-                    Swal.fire({
-                        title: "Canceled!",
-                        text: "Your booking has been canceled.",
-                        icon: "success"
-                    });
                     setRender(!render);
 
                 }
