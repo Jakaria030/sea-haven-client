@@ -98,17 +98,21 @@ const MyBookingPage = () => {
         // console.log(newDate, currBookedId);
 
         const updateData = async () => {
-            const { data } = await axios.patch(`${baseURL}/booked-room-release/${currBookedId}`, { bookingDate: new Date(), checkInDate: newDate, isCancel: false });
+            try {
+                const { data } = await axios.patch(`${baseURL}/booked-room-release/${currBookedId}`, { email: user.email, bookingDate: new Date(), checkInDate: newDate, isCancel: false }, { withCredentials: true });
 
-            // update room status
-            const res = await axios.patch(`${baseURL}/rooms/${currRoomId}`, { is_booked: true });
+                // update room status
+                const res = await axios.patch(`${baseURL}/rooms/${currRoomId}`, { is_booked: true });
 
-            if (data.acknowledged) {
-                successAlert('Check-in date updated.')
-                setRender(!render);
-                document.getElementById('close_update_modal').click();
-            } else {
-                errorAlert('Check-in date is not updated.')
+                if (data.acknowledged) {
+                    successAlert('Check-in date updated.')
+                    setRender(!render);
+                    document.getElementById('close_update_modal').click();
+                } else {
+                    errorAlert('Check-in date is not updated.')
+                }
+            }catch(err){
+                errorAlert(err.message);
             }
         };
         updateData();
