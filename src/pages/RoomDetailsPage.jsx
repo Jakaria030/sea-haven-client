@@ -7,6 +7,7 @@ import Review from "../components/Review";
 import Title from "../components/Title";
 import NoDataFound from "../components/NoDataFound";
 import { FaRegSmile } from "react-icons/fa";
+import Loader from "../loader/Loader";
 
 const RoomDetailsPage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
@@ -49,6 +50,9 @@ const RoomDetailsPage = () => {
     return (
         <div className="space-y-10 mb-10">
             <Title title={'Room Details'}></Title>
+            {
+                isLoading ? <Loader></Loader> : (<>
+            
             {/* title banner */}
             <TitleBanner title={roomDetails.room_name}></TitleBanner>
 
@@ -81,6 +85,7 @@ const RoomDetailsPage = () => {
                     ) : (<div className="flex items-center gap-2"><h2 className="text-xl text-secondary font-medium">This room hasn't been reviewed yet. Be the first to share your experience!</h2><FaRegSmile className="text-3xl text-secondary font-medium shrink-0" /></div>)
                 }
             </section>
+            </>)}
         </div>
     );
 };

@@ -183,7 +183,7 @@ const HomePage = () => {
                             <div className="collapse collapse-plus border-2 border-white">
                                 <input type="radio" name="my-accordion-3" />
                                 <div className="collapse-title text-xl font-medium flex items-center gap-2">
-                                    <IoIosTv  className='text-3xl' />
+                                    <IoIosTv className='text-3xl' />
                                     <h3>TV in Bedroom</h3>
                                 </div>
                                 <div className="collapse-content">
