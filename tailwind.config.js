@@ -19,6 +19,7 @@ export default {
       },
       backgroundImage: {
         'login-register-bg': "url('/src/assets/green-bg.jpg')",
+        'count-up-bg': "url('/src/assets/hotel-inside.png')",
       }
     },
   },
