@@ -42,7 +42,7 @@ const Navbar = () => {
                             </div>
                             <ul
                                 tabIndex={0}
-                                className='menu menu-md dropdown-content rounded-lg z-[1] mt-5 w-60 space-y-1 px-3 py-4 shadow bg-primary text-secondary text-md'>
+                                className='menu menu-md dropdown-content rounded-lg z-[1] mt-5 w-60 space-y-1 px-3 py-4 shadow-lg border-t-4 border-primary bg-white text-secondary text-md'>
                                 {links}
                             </ul>
                         </div>
@@ -72,7 +72,7 @@ const Navbar = () => {
                                     </div>
                                     <ul
                                         tabIndex={0}
-                                        className='menu menu-md dropdown-content rounded-sm z-[1] mt-5 shadow bg-white right-0'>
+                                        className='menu menu-md dropdown-content rounded-sm z-[1] mt-5 shadow bg-white border-t-2 border-primary right-0'>
                                         <button onClick={handleSignOutUser} className='px-4 py-2 rounded-sm bg-primary font-semibold text-secondary z-50'>Logout</button>
                                     </ul>
                                 </div> : <NavLink to='/login-page' state={location?.pathname}><button className='px-4 py-2 rounded-sm bg-primary font-semibold text-secondary'>Login</button></NavLink>
