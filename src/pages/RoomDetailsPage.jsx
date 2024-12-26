@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Review from "../components/Review";
 import Title from "../components/Title";
+import NoDataFound from "../components/NoDataFound";
+import { FaRegSmile } from "react-icons/fa";
 
 const RoomDetailsPage = () => {
     const baseURL = import.meta.env.VITE_RootURL;
@@ -27,13 +29,13 @@ const RoomDetailsPage = () => {
                 setTotalReviews(data.length);
 
                 let count = 0;
-                for(const review of data){
+                for (const review of data) {
                     count = count + review['rating'];
                 }
                 setTotalRatings(count);
             } catch (err) {
                 setError(err.message);
-            } finally{
+            } finally {
                 setIsLoading(false);
             }
         };
@@ -66,16 +68,17 @@ const RoomDetailsPage = () => {
             {/* user reviews */}
             <section className='max-w-8xl mx-auto px-5'>
                 {
-                    reviews &&
-                    (
-                        
-                        <div className="grid grid-cols-1 gap-5">
-                            {reviews.map(review => <Review
-                                key={review._id}
-                                review={review}
-                            ></Review>)}
-                        </div>
-                    )
+                    (reviews && reviews.length > 0) ? (
+                        <>
+                            <h2 className="text-2xl font-medium my-3 text-secondary">Total Reviews ::: {reviews.length}</h2>
+                            <div className="grid grid-cols-1 gap-5">
+                                {reviews.map(review => <Review
+                                    key={review._id}
+                                    review={review}
+                                ></Review>)}
+                            </div>
+                        </>
+                    ) : (<div className="flex items-center gap-2"><h2 className="text-xl text-secondary font-medium">This room hasn't been reviewed yet. Be the first to share your experience!</h2><FaRegSmile className="text-3xl text-secondary font-medium shrink-0" /></div>)
                 }
             </section>
         </div>

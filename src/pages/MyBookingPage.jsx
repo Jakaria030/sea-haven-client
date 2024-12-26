@@ -32,12 +32,13 @@ const MyBookingPage = () => {
                 setIsLoading(true);
                 setError(null);
                 // Fetch both booked rooms and room details from the server
-                const { data } = await axios.get(`${baseURL}/booked-room?email=${user.email}`);
+                const { data } = await axios.get(`${baseURL}/booked-room?email=${user.email}`, {withCredentials: true});
                 setRooms(data.rooms);
                 setBookingDetails(data.bookings);
 
             } catch (err) {
                 setError(err.message);
+                errorAlert(err.message);
             } finally {
                 setIsLoading(false);
             }

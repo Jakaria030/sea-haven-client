@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
 const RoomSummary = ({ roomDetails, totalRatings, totalReviews }) => {
@@ -31,7 +30,6 @@ const RoomSummary = ({ roomDetails, totalRatings, totalReviews }) => {
                             }
                         })
                     }
-                    <span className="text-xl text-gray-400-400 ml-2">({totalReviews})</span>
                 </div>
             </div>
 

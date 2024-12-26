@@ -16,7 +16,7 @@ const defaultIcon = L.icon({
 L.Marker.prototype.options.icon = defaultIcon;
 
 const HotelMap = () => {
-  const hotelPosition = [23.012325109575148, 89.83454076076065];
+  const hotelPosition = [21.818191132527446, 90.13951064263217];
 
   return (
     <div className="h-[400px] w-full m-auto rounded-md border-2 border-white z-0">
@@ -24,7 +24,7 @@ const HotelMap = () => {
         center={hotelPosition}
         zoom={13}
         scrollWheelZoom={false}
-        style={{ height: "100%", width: "100%", }}
+        style={{ height: "100%", width: "100%", zIndex:0}}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
