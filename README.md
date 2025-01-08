@@ -4,6 +4,9 @@
 ## Purpose
 Sea Haven is a web-based hotel booking platform designed to provide users with an effortless way to find and book their dream stay near the sea. The platform showcases a curated list of seaside hotels, offers detailed room information, and enables smooth online bookings. This project demonstrates innovative solutions for managing hotel reservations with a focus on user experience.
 
+## Preview
+![Project Image](public/sea-haven.png)
+
 ## Live URL
 [Visit Sea Haven Hotel Booking Website](https://sea-haven-7a097.web.app/)
 
@@ -53,11 +56,11 @@ Follow these steps to set up and run the project locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/programming-hero-web-course2/b10a11-client-side-Jakaria030
+   git clone https://github.com/Jakaria030/sea-haven-client.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd b10a11-client-side-Jakaria030
+   cd sea-haven-client
    ```
 3. Install dependencies:
    ```bash
@@ -69,5 +72,5 @@ Follow these steps to set up and run the project locally:
    ```
 5. You have to setup some other things like firebase as per your need. Also you have to setup backend server. <br>
    Follow my server sidde Github reposity docs.
-[Visit](https://github.com/programming-hero-web-course2/b10a11-server-side-Jakaria030)
+[Visit](https://github.com/Jakaria030/sea-haven-server)
 
