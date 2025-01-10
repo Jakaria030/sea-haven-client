@@ -74,7 +74,7 @@ const RoomDetailsPage = () => {
                 {
                     (reviews && reviews.length > 0) ? (
                         <>
-                            <h2 className="text-2xl font-medium my-3 text-secondary">Total Reviews ::: {reviews.length}</h2>
+                            <h2 className="text-2xl font-medium mb-3 text-secondary">Total Reviews ::: {reviews.length}</h2>
                             <div className="grid grid-cols-1 gap-5">
                                 {reviews.map(review => <Review
                                     key={review._id}

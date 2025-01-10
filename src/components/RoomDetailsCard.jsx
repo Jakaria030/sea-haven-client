@@ -85,7 +85,7 @@ const RoomDetailsCard = ({ roomDetails, totalRatings, totalReviews }) => {
                 <img className='w-full h-full rounded-md mx-auto' src={room_image} alt='Room Image' />
             </figure>
 
-            <div className='lg:px-5 flex flex-col space-y-3 py-5 lg:py-0'>
+            <div className='lg:pl-5 flex flex-col space-y-3 pt-5 lg:py-0'>
 
                 {/* room details */}
                 <RoomSummary

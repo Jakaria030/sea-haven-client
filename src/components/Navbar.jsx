@@ -42,7 +42,7 @@ const Navbar = () => {
                             </div>
                             <ul
                                 tabIndex={0}
-                                className='menu menu-md dropdown-content rounded-lg z-[1] mt-5 w-60 space-y-1 px-3 py-4 shadow-lg border-t-4 border-primary bg-white text-secondary text-md'>
+                                className='menu menu-md dropdown-content rounded-b-lg z-[1] mt-8 w-60 space-y-1 px-3 py-4 shadow-lg border-t-2 border-primary bg-white text-secondary text-md'>
                                 {links}
                             </ul>
                         </div>

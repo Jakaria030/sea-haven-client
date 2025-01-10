@@ -27,7 +27,7 @@ const TopRoomCard = ({ room }) => {
                     </div>
                     <div className="mt-auto">
                         <Link to={`/room-details/${_id}`}>
-                            <button className="px-6 py-2 bg-primary text-secondary w-full text-lg font-medium active:scale-95 transition-all duration-150 ease-in-out">Book Now</button>
+                            <button className="px-6 py-2 bg-primary text-secondary w-full text-lg font-medium active:scale-95 transition-all duration-150 ease-in-out">See Details</button>
                         </Link>
                     </div>
                 </div>
