@@ -66,12 +66,12 @@ const LoginPage = () => {
                         <button onClick={handleGoogleSignIn} className='p-2 border rounded-full'>
                             <FaGoogle className='text-2xl text-secondary' />
                         </button>
-                        <button className='p-2 border rounded-full'>
+                        {/* <button className='p-2 border rounded-full'>
                             <FaFacebook className='text-2xl text-secondary' />
                         </button>
                         <button className='p-2 border rounded-full'>
                             <FaGithub className='text-2xl text-secondary' />
-                        </button>
+                        </button> */}
                     </div>
 
                     <div className='divider pb-5 text-secondary'>or use your email to login.</div>
